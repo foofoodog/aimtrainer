@@ -1,0 +1,254 @@
+[gd_scene format=3 uid="uid://main_menu_scene"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_menu"]
+[ext_resource type="Script" path="res://scripts/range_background.gd" id="2_bg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.08, 0.1, 0.14, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.45, 0.6, 0.8)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+content_margin_left = 32.0
+content_margin_top = 20.0
+content_margin_right = 32.0
+content_margin_bottom = 20.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font_size = 32
+font_color = Color(1, 0.88, 0.3, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 0.9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_subtitle"]
+font_size = 18
+font_color = Color(0.8, 0.9, 1, 0.9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_high"]
+font_size = 19
+font_color = Color(1, 0.8, 0.2, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_card"]
+font_size = 13
+font_color = Color(0.85, 0.9, 0.95, 0.85)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="Node2D" parent="."]
+script = ExtResource("2_bg")
+
+[node name="MainPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -370.0
+offset_top = -310.0
+offset_right = 370.0
+offset_bottom = 310.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBox" type="VBoxContainer" parent="MainPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Title" type="Label" parent="MainPanel/VBox"]
+layout_mode = 2
+text = "Aim Trainer - Birds, Beasts and Brutes"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+
+[node name="HighScoreLabel" type="Label" parent="MainPanel/VBox"]
+layout_mode = 2
+text = "★ ALL-TIME HIGH SCORE: 0 ★"
+label_settings = SubResource("LabelSettings_high")
+horizontal_alignment = 1
+
+[node name="HSeparator1" type="HSeparator" parent="MainPanel/VBox"]
+layout_mode = 2
+
+[node name="ModeContainer" type="HBoxContainer" parent="MainPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="ModeTitle" type="Label" parent="MainPanel/VBox/ModeContainer"]
+layout_mode = 2
+text = "Difficulty:"
+
+[node name="ModeOption" type="OptionButton" parent="MainPanel/VBox/ModeContainer"]
+custom_minimum_size = Vector2(340, 36)
+layout_mode = 2
+
+[node name="CustomSettings" type="VBoxContainer" parent="MainPanel/VBox"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="MissesHBox" type="HBoxContainer" parent="MainPanel/VBox/CustomSettings"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="MissesLabel" type="Label" parent="MainPanel/VBox/CustomSettings/MissesHBox"]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+text = "Max Consecutive Misses:"
+
+[node name="MissesSlider" type="HSlider" parent="MainPanel/VBox/CustomSettings/MissesHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 1.0
+max_value = 30.0
+value = 10.0
+
+[node name="MissesValue" type="Label" parent="MainPanel/VBox/CustomSettings/MissesHBox"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+text = "10"
+
+[node name="SpeedHBox" type="HBoxContainer" parent="MainPanel/VBox/CustomSettings"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SpeedLabel" type="Label" parent="MainPanel/VBox/CustomSettings/SpeedHBox"]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+text = "Speed Acceleration:"
+
+[node name="SpeedSlider" type="HSlider" parent="MainPanel/VBox/CustomSettings/SpeedHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 0.2
+max_value = 3.0
+step = 0.1
+value = 1.0
+
+[node name="SpeedValue" type="Label" parent="MainPanel/VBox/CustomSettings/SpeedHBox"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+text = "1.0x"
+
+[node name="AFKHBox" type="HBoxContainer" parent="MainPanel/VBox/CustomSettings"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="AFKLabel" type="Label" parent="MainPanel/VBox/CustomSettings/AFKHBox"]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+text = "AFK Shot Timeout:"
+
+[node name="AFKSlider" type="HSlider" parent="MainPanel/VBox/CustomSettings/AFKHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 1.0
+max_value = 30.0
+step = 1.0
+value = 10.0
+
+[node name="AFKValue" type="Label" parent="MainPanel/VBox/CustomSettings/AFKHBox"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+text = "10s"
+
+[node name="TargetGuidePanel" type="PanelContainer" parent="MainPanel/VBox"]
+layout_mode = 2
+
+[node name="GuideVBox" type="VBoxContainer" parent="MainPanel/VBox/TargetGuidePanel"]
+layout_mode = 2
+
+[node name="GuideLabel" type="Label" parent="MainPanel/VBox/TargetGuidePanel/GuideVBox"]
+layout_mode = 2
+text = "• BIRDS (250 pts): Sky flyers, fast & swooping.
+• BEASTS (175 pts): Ground sprinters, bounding trot.
+• BRUTES (120 pts): Armored pop-up targets. Hit before they duck!
+• SHOT TIMER: Easy = 20s, Medium = 10s, Hard = 5s.
+• CHANCES: Easy = 15, Medium = 10, Hard = 5 (subtractive rounds at bottom)."
+label_settings = SubResource("LabelSettings_card")
+
+[node name="HSeparator2" type="HSeparator" parent="MainPanel/VBox"]
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="MainPanel/VBox"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+text = "▶ START SHOOTING"
+
+[node name="HistoryButton" type="Button" parent="MainPanel/VBox"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+text = "📊 VIEW PAST SCORES"
+
+[node name="QuitButton" type="Button" parent="MainPanel/VBox"]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+text = "✕ QUIT"
+
+[node name="HistoryWindow" type="Window" parent="."]
+title = "Score History & Stats"
+initial_position = 2
+size = Vector2i(580, 420)
+visible = false
+transient = true
+exclusive = true
+
+[node name="VBox" type="VBoxContainer" parent="HistoryWindow"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="HistoryList" type="ItemList" parent="HistoryWindow/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BtnHBox" type="HBoxContainer" parent="HistoryWindow/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="ClearHistoryButton" type="Button" parent="HistoryWindow/VBox/BtnHBox"]
+custom_minimum_size = Vector2(140, 36)
+layout_mode = 2
+text = "Clear History"
+
+[node name="CloseHistoryButton" type="Button" parent="HistoryWindow/VBox/BtnHBox"]
+custom_minimum_size = Vector2(140, 36)
+layout_mode = 2
+text = "Close"
+
+[connection signal="item_selected" from="MainPanel/VBox/ModeContainer/ModeOption" to="." method="_on_mode_selected"]
+[connection signal="value_changed" from="MainPanel/VBox/CustomSettings/MissesHBox/MissesSlider" to="." method="_on_misses_slider_changed"]
+[connection signal="value_changed" from="MainPanel/VBox/CustomSettings/SpeedHBox/SpeedSlider" to="." method="_on_speed_slider_changed"]
+[connection signal="value_changed" from="MainPanel/VBox/CustomSettings/AFKHBox/AFKSlider" to="." method="_on_afk_slider_changed"]
+[connection signal="pressed" from="MainPanel/VBox/PlayButton" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="MainPanel/VBox/HistoryButton" to="." method="_on_history_pressed"]
+[connection signal="pressed" from="MainPanel/VBox/QuitButton" to="." method="_on_quit_pressed"]
+[connection signal="close_requested" from="HistoryWindow" to="." method="_on_close_history_pressed"]
+[connection signal="pressed" from="HistoryWindow/VBox/BtnHBox/ClearHistoryButton" to="." method="_on_clear_history_pressed"]
+[connection signal="pressed" from="HistoryWindow/VBox/BtnHBox/CloseHistoryButton" to="." method="_on_close_history_pressed"]

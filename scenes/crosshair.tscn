@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://crosshair_scene"]
+
+[ext_resource type="Script" path="res://scripts/crosshair.gd" id="1_crosshair"]
+
+[node name="Crosshair" type="Node2D"]
+script = ExtResource("1_crosshair")

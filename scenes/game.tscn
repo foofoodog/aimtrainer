@@ -1,0 +1,159 @@
+[gd_scene format=3 uid="uid://game_scene"]
+
+[ext_resource type="Script" path="res://scripts/game_controller.gd" id="1_controller"]
+[ext_resource type="Script" path="res://scripts/range_background.gd" id="2_bg"]
+[ext_resource type="Script" path="res://scripts/spawner.gd" id="3_spawner"]
+[ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://scenes/crosshair.tscn" id="5_crosshair"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal"]
+bg_color = Color(0.08, 0.1, 0.14, 0.94)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.75, 0.35, 0.2, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_size = 18
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font_size = 38
+font_color = Color(1, 0.3, 0.3, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 0.9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_final"]
+font_size = 28
+font_color = Color(1, 0.9, 0.2, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_banner"]
+font_size = 20
+font_color = Color(0.4, 0.85, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_details"]
+font_size = 16
+font_color = Color(0.85, 0.88, 0.92, 1)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_controller")
+
+[node name="Background" type="Node2D" parent="."]
+script = ExtResource("2_bg")
+
+[node name="Spawner" type="Node2D" parent="."]
+script = ExtResource("3_spawner")
+
+[node name="HUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="Crosshair" parent="." instance=ExtResource("5_crosshair")]
+
+[node name="GameOverCanvas" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="GameOverPanel" type="PanelContainer" parent="GameOverCanvas"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -200.0
+offset_right = 260.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
+
+[node name="VBox" type="VBoxContainer" parent="GameOverCanvas/GameOverPanel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="Title" type="Label" parent="GameOverCanvas/GameOverPanel/VBox"]
+layout_mode = 2
+text = "GAME OVER"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+
+[node name="FinalScoreLabel" type="Label" parent="GameOverCanvas/GameOverPanel/VBox"]
+layout_mode = 2
+text = "FINAL SCORE: 0"
+label_settings = SubResource("LabelSettings_final")
+horizontal_alignment = 1
+
+[node name="HighScoreStatus" type="Label" parent="GameOverCanvas/GameOverPanel/VBox"]
+layout_mode = 2
+text = "HIGH SCORE: 0"
+label_settings = SubResource("LabelSettings_banner")
+horizontal_alignment = 1
+
+[node name="StatsLabel" type="Label" parent="GameOverCanvas/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Hits: 0  |  Misses: 0  |  Accuracy: 0%"
+label_settings = SubResource("LabelSettings_details")
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="GameOverCanvas/GameOverPanel/VBox"]
+layout_mode = 2
+
+[node name="ButtonHBox" type="HBoxContainer" parent="GameOverCanvas/GameOverPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="GameOverCanvas/GameOverPanel/VBox/ButtonHBox"]
+custom_minimum_size = Vector2(160, 44)
+layout_mode = 2
+text = "PLAY AGAIN"
+
+[node name="MainMenuButton" type="Button" parent="GameOverCanvas/GameOverPanel/VBox/ButtonHBox"]
+custom_minimum_size = Vector2(160, 44)
+layout_mode = 2
+text = "MAIN MENU"
+
+[node name="PauseCanvas" type="CanvasLayer" parent="."]
+layer = 30
+
+[node name="PausePanel" type="PanelContainer" parent="PauseCanvas"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -120.0
+offset_right = 180.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
+
+[node name="VBox" type="VBoxContainer" parent="PauseCanvas/PausePanel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="PauseTitle" type="Label" parent="PauseCanvas/PausePanel/VBox"]
+layout_mode = 2
+text = "GAME PAUSED"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="PauseCanvas/PausePanel/VBox"]
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 2
+text = "RESUME"
+
+[node name="PauseMenuButton" type="Button" parent="PauseCanvas/PausePanel/VBox"]
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 2
+text = "EXIT TO MENU"
+
+[connection signal="pressed" from="GameOverCanvas/GameOverPanel/VBox/ButtonHBox/RetryButton" to="." method="_on_retry_pressed"]
+[connection signal="pressed" from="GameOverCanvas/GameOverPanel/VBox/ButtonHBox/MainMenuButton" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="PauseCanvas/PausePanel/VBox/ResumeButton" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseCanvas/PausePanel/VBox/PauseMenuButton" to="." method="_on_main_menu_pressed"]

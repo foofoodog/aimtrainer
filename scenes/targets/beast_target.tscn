@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://beast_target_scene"]
+
+[ext_resource type="Script" path="res://scripts/beast_target.gd" id="1_beast"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_beast"]
+radius = 28.0
+height = 80.0
+
+[node name="BeastTarget" type="Area2D"]
+script = ExtResource("1_beast")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_beast")

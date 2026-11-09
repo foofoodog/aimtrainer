@@ -1,0 +1,20 @@
+# Godot 4 cache and imported files
+.godot/
+
+# Exported binaries & packages (large binaries exceeding GitHub 100MB limit)
+build/
+*.exe
+*.x86_64
+*.pck
+*.apk
+*.zip
+
+# User data
+*.user
+*.log
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*~

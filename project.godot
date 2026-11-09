@@ -1,0 +1,37 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Aim Trainer - Birds, Beasts and Brutes"
+config/description="Fast-paced target shooting range featuring Birds, Beasts, and Brutes."
+config/version="1.0.0"
+run/main_scene="res://scenes/main_menu.tscn"
+config/features=PackedStringArray("4.7", "Forward Plus")
+config/icon="res://icon.png"
+
+[autoload]
+
+GameSettings="*res://scripts/game_settings.gd"
+ScoreManager="*res://scripts/score_manager.gd"
+SoundEffects="*res://scripts/sound_effects.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/mode=3
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[rendering]
+
+environment/defaults/default_clear_color=Color(0.18, 0.35, 0.58, 1)
+renderer/rendering_method="forward_plus"
