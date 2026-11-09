@@ -43,8 +43,46 @@ func _ready() -> void:
 	hud.setup(max_sequential_misses, ScoreManager.high_score)
 	hud.update_afk_timer(afk_timer, max_afk_time)
 	
+	_setup_atmospheric_particles()
+	
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	start_game()
+
+var muzzle_light: PointLight2D = null
+
+func _setup_atmospheric_particles() -> void:
+	var motes = CPUParticles2D.new()
+	motes.name = "AmbientMotes"
+	motes.texture = RangeFX.get_circle_texture()
+	motes.amount = 30
+	motes.lifetime = 6.0
+	motes.preprocess = 4.0
+	motes.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	motes.emission_rect_extents = Vector2(900.0, 360.0)
+	motes.position = Vector2(640.0, 360.0)
+	motes.direction = Vector2(1.0, -0.15)
+	motes.spread = 25.0
+	motes.gravity = Vector2(0, -4.0)
+	motes.initial_velocity_min = 12.0
+	motes.initial_velocity_max = 32.0
+	motes.scale_amount_min = 0.08
+	motes.scale_amount_max = 0.20
+	motes.color = Color(1.0, 0.90, 0.65, 0.32)
+	add_child(motes)
+
+func _trigger_muzzle_flash() -> void:
+	if not muzzle_light:
+		muzzle_light = PointLight2D.new()
+		muzzle_light.texture = RangeFX.get_circle_texture()
+		muzzle_light.texture_scale = 14.0
+		muzzle_light.color = Color(1.0, 0.85, 0.45)
+		muzzle_light.energy = 0.0
+		muzzle_light.position = Vector2(get_viewport_rect().size.x * 0.5, get_viewport_rect().size.y - 30.0)
+		add_child(muzzle_light)
+		
+	muzzle_light.energy = 2.5
+	var tween = create_tween()
+	tween.tween_property(muzzle_light, "energy", 0.0, 0.07)
 
 func start_game() -> void:
 	total_score = 0
@@ -121,6 +159,7 @@ func _fire_shot(click_pos: Vector2) -> void:
 	SoundEffects.play_gunshot()
 	crosshair.kick_recoil()
 	shake_amount = 5.0
+	_trigger_muzzle_flash()
 	
 	# Raycast / Query targets at click point
 	var space_state = get_world_2d().direct_space_state
@@ -175,6 +214,14 @@ func _handle_hit(target: Target, hit_pos: Vector2) -> void:
 	crosshair.trigger_hitmarker()
 	SoundEffects.play_hit(target.distance_multiplier)
 	
+	# Kinetic archetype-specific impact particles
+	if target is BirdTarget:
+		RangeFX.spawn_feather_burst(self, hit_pos, Color(0.35, 0.75, 1.0))
+	elif target is BeastTarget:
+		RangeFX.spawn_dirt_kickup(self, hit_pos)
+	elif target is BruteTarget:
+		RangeFX.spawn_metal_sparks(self, hit_pos)
+	
 	# Spawn floating score text
 	_spawn_floating_text("+%d" % points, hit_pos, Color(1.0, 0.9, 0.2))
 		
@@ -195,6 +242,7 @@ func _handle_miss(click_pos: Vector2) -> void:
 	# Pitch rises the more consecutive missed shots occur
 	SoundEffects.play_miss(sequential_misses, max_sequential_misses)
 	_spawn_floating_text("-100", click_pos, Color(1.0, 0.25, 0.25), 1.0)
+	RangeFX.spawn_miss_puff(self, click_pos)
 	
 	hud.update_score(total_score)
 	hud.flash_score_deduction()

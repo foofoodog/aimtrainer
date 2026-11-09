@@ -46,9 +46,17 @@ func _duck_and_escape() -> void:
 	tween.tween_property(self, "position:y", ground_y, 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tween.tween_callback(escape)
 
+func _play_death_effect() -> void:
+	var tween = create_tween()
+	modulate = Color(2.6, 2.6, 2.0) # White hot flash on impact
+	tween.tween_property(self, "modulate", Color(0.4, 0.4, 0.4, 0.0), 0.24)
+	tween.parallel().tween_property(self, "position:y", position.y + 70.0, 0.24).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween.chain().tween_callback(queue_free)
+
 func _draw() -> void:
-	var armor_steel = Color(0.28, 0.30, 0.36)
-	var armor_trim = Color(0.75, 0.60, 0.20) # Bronze/Gold trim
+	var armor_steel = Color(0.30, 0.32, 0.38)
+	var armor_highlight = Color(0.46, 0.50, 0.58)
+	var armor_trim = Color(0.80, 0.62, 0.22) # Bronze/Gold trim
 	var brute_skin = Color(0.35, 0.48, 0.32) # Orc/Troll green
 	var bullseye_red = Color(0.95, 0.15, 0.15)
 	var bullseye_white = Color(1.0, 1.0, 1.0)

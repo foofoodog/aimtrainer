@@ -35,12 +35,23 @@ func _process(delta: float) -> void:
 	elif direction < 0 and position.x < -120.0:
 		escape()
 
+func _play_death_effect() -> void:
+	var tween = create_tween()
+	tween.set_parallel(true)
+	var tumble_target = position + Vector2(-direction * 65.0, -35.0)
+	tween.tween_property(self, "position", tumble_target, 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "rotation", -direction * 3.8, 0.32)
+	tween.tween_property(self, "scale", scale * 0.4, 0.32)
+	tween.tween_property(self, "modulate:a", 0.0, 0.32)
+	tween.chain().tween_callback(queue_free)
+
 func _draw() -> void:
 	var facing = 1.0 if direction > 0 else -1.0
 	
-	var fur_color = Color(0.85, 0.45, 0.18) # Fox/tiger orange-brown
+	var fur_color = Color(0.88, 0.46, 0.18) # Rich fox/tiger orange
+	var fur_highlight = Color(1.0, 0.68, 0.35) # Sunset back highlight
 	var belly_color = Color(0.96, 0.90, 0.80)
-	var dark_color = Color(0.35, 0.18, 0.08)
+	var dark_color = Color(0.32, 0.16, 0.08)
 	var bullseye_red = Color(0.95, 0.15, 0.15)
 	var bullseye_white = Color(1.0, 1.0, 1.0)
 	

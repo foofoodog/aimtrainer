@@ -43,17 +43,28 @@ func _process(delta: float) -> void:
 	elif direction < 0 and position.x < -120.0:
 		escape()
 
+func _play_death_effect() -> void:
+	var tween = create_tween()
+	tween.set_parallel(true)
+	var fall_target = position + Vector2(direction * 45.0, 95.0)
+	tween.tween_property(self, "position", fall_target, 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween.tween_property(self, "rotation", direction * 5.2, 0.32)
+	tween.tween_property(self, "scale", scale * 0.35, 0.32)
+	tween.tween_property(self, "modulate:a", 0.0, 0.32)
+	tween.chain().tween_callback(queue_free)
+
 func _draw() -> void:
 	# Draw animated Bird Target
 	var facing = 1.0 if direction > 0 else -1.0
 	var wing_angle = sin(flap_time) * 0.7
 	
 	# Color palette
-	var body_color = Color(0.18, 0.55, 0.92) # Sky blue bird
-	var wing_color = Color(0.10, 0.40, 0.78)
-	var belly_color = Color(0.95, 0.95, 0.98)
-	var beak_color = Color(1.0, 0.75, 0.15)
-	var bullseye_red = Color(0.92, 0.22, 0.22)
+	var body_color = Color(0.18, 0.58, 0.94) # Brilliant Cerulean
+	var wing_color = Color(0.10, 0.42, 0.82)
+	var wing_highlight = Color(0.45, 0.82, 1.0) # Sunset rim light
+	var belly_color = Color(0.96, 0.96, 0.99)
+	var beak_color = Color(1.0, 0.78, 0.15)
+	var bullseye_red = Color(0.95, 0.18, 0.18)
 	var bullseye_white = Color(1.0, 1.0, 1.0)
 	
 	# Tail feathers
